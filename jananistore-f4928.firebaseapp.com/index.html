@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0" />
+    <title>Jananistore</title>
+    <!-- CSS  -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection" />
+    <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection" />
+    <link href="css/font-awesome.min.css" type="text/css" rel="stylesheet" media="screen,projection" />
+    <link href="https://fonts.googleapis.com/css?family=Bree+Serif|Cinzel|Monda|Playfair+Display+SC|Rubik" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="slick/slick.css" />
+    <link rel="stylesheet" type="text/css" href="slick/slick-theme.css" />
+    <script src="https://www.gstatic.com/firebasejs/3.5.3/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyBCOoR4l7M6DyNIahR6H93Z5zpOTsZ_w-E",
+            authDomain: "jananistore-f4928.firebaseapp.com",
+            databaseURL: "https://jananistore-f4928.firebaseio.com",
+            storageBucket: "jananistore-f4928.appspot.com",
+            messagingSenderId: "538178486843"
+        };
+        firebase.initializeApp(config);
+    </script>
+    <script type="text/javascript">
+        var login =
+            '<li> <a id=dropdo  onclick=dro()   class=dropbtn><img id="phourl" alt="profile pic" class="circle responsive-img " style="height:30px;    "></a></li > ';
+        var displayName, photourl;
+
+        function googlelogin() {
+            if (!firebase.auth().currentUser) {
+                var provider = new firebase.auth.GoogleAuthProvider();
+                provider.addScope('https://www.googleapis.com/auth/plus.login');
+                firebase.auth().signInWithPopup(provider).then(function (result) {
+                    var token = result.credential.accessToken;
+                    var user = result.user;
+
+
+                }).catch(function (error) {
+                    var errorCode = error.code;
+                    var errorMessage = error.message;
+                    var email = error.email;
+                    var credential = error.credential;
+                    if (errorCode === 'auth/account-exists-with-different-credential') {
+                        alert('You have already signed up with a different auth provider for that email.');
+                    } else {
+                        console.error(error);
+                    }
+                });
+            } else {
+                firebase.auth().signOut();
+            }
+
+
+        }
+
+        function initApp() {
+            firebase.auth().onAuthStateChanged(function (user) {
+                if (user) {
+                    displayName = user.displayName;
+                    photourl = user.photoURL;
+
+                    document.getElementById('loginbuttons').innerHTML = login;
+                    document.getElementById('fab').hidden = "hidden";
+                    if (user) {
+                        document.getElementById('phourl').src = photourl;
+
+                    }
+                } else {}
+            });
+        }
+
+        function signout() {
+            firebase.auth().signOut();
+            window.open("/index.html", "_self");
+        }
+
+        function dro() {
+            console.log("sda");
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+        window.onclick = function (event) {
+            if (!event.target.matches('.dropbtn')) {
+
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                var i;
+                for (i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Bree Serif', serif;
+        }
+        
+        .brand-logo {
+            font-family: 'Bree Serif', serif;
+        }
+        
+        .nav2 {
+            height: 100px;
+        }
+        
+        .slideimg h3 {
+            font-family: 'Monda', sans-serif;
+        }
+        
+        .slidecard {
+            margin: 10px;
+        }
+        
+        .mycontainer {
+            margin: 50px;
+        }
+        
+        li i {
+            padding: 5px;
+        }
+        
+        #signupfab a {
+            margin: 15px;
+        }
+        
+        #loginfab a {
+            margin: 15px;
+        }
+        
+        .mycontainerlf {
+            margin-left: 40px;
+            margin-right: 40px;
+        }
+        
+        @media screen and (max-width: 480px) {
+            .mycontainerlf {
+                margin-left: 0;
+                margin-right: 0;
+            }
+        }
+        
+        .imageWrapper2 {
+            margin-right: 5px;
+            margin-left: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            color: black;
+        }
+        
+        .imageWrapper2 img {
+            width: inherit;
+            height: 250px;
+            opacity: 1;
+            transition: opacity .3s;
+        }
+        
+        .imageWrapper2 div {
+            opacity: 0;
+            transition: opacity .3s;
+            padding: 10px;
+        }
+        
+        .imageWrapper2 div {
+            display: inline-block;
+            float: left;
+        }
+        
+        .imageWrapper2 .icon {
+            float: right;
+        }
+        
+        .imageWrapper2:hover div {
+            opacity: 1;
+        }
+        
+        .imageWrapper2:hover img {
+            opacity: 0.5;
+        }
+        
+        .slick-prev:before,
+        .slick-next:before {
+            color: red;
+        }
+        
+        .imga {
+            width: inherit;
+            height: 300px;
+            opacity: 1;
+            transition: opacity .3s;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        }
+        /* Links inside the dropdown */
+        
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+        /* Change color of dropdown links on hover */
+        
+        .dropdown-content a:hover {
+            background-color: #f1f1f1
+        }
+        /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+        
+        .show {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="teal darken-3 lighten-1" role="navigation" style="height:35px;">
+        <div class="nav-wrapper mycontainerlf" id="nav">
+            <ul class="right hide-on-med-and-down" style="height:inherit;">
+                <li>
+                    <a href="#cart">Cart</a>
+                </li>
+                <li id="loginbuttons">
+                    <a href="#login">Login</a>
+                     
+                </li>
+               
+            </ul>
+            <ul id="nav-mobile" class="side-nav">
+                <li><a href="#login">login</a></li>
+                <li><a href="#">cart </a></li>
+            </ul>
+            <ul id="nav-mobile2" class="side-nav">
+                <li><a href="#login">login</a></li>
+                <li><a href="#">cart </a></li>
+            </ul>
+            <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+        </div>
+    </nav>
+    <div id="myDropdown" class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
+    <nav class="teal darken-3 lighten-1 nav2" role="navigation" style="height:90px;">
+        <div class="nav-wrapper  mycontainerlf" id="nav"><a id="logo-container" href="#" class="brand-logo" style="font-size:45px;">Jananistore</a>
+            <div class="mycontainerlf">
+                <div class="row">
+                    <div class="col s12 m12 l12">
+                        <div id="mobile_search">
+                            <ul class="right hide-on-med-and-down" style="width: 75%;">
+                                <div class="row">
+                                    <div class=" myinput col s12 m12 l10 center float">
+                                        <li style="width:inherit;">
+                                            <input id="search" placeholder="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Search here" type="text" style="background:#fff;color:#000;"
+                                                class="autocomplete">
+                                        </li>
+                                        <li>
+                                            <span><i class="material-icons prefix black-text" style="position: absolute;left: 70%;">&#xE8B6;</i></span>
+                                        </li>
+                                    </div>
+                                </div>
+                            </ul>
+                            <a href="#" data-activates="nav-mobile2" class="button-collapse" style="width:100%;">
+                                <div class="row center">
+                                    <div class=" myinput col s12 m12 l12 center float">
+                                        <ul style="width:inherit">
+                                            <li style="width:inherit;">
+                                                <input id="search" placeholder="   Search here" type="text" style="background:#fff;color:#000;" class="autocomplete">
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div id="login" class="modal">
+        <div class="modal-content" id="fab">
+            <div class="row">
+                <div class="center">
+                    <a class="waves-effect waves-white btn-flat red white-text" onclick="googlelogin()">Login with Google</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="section no-pad-bot" id="index-banner">
+        <div class="container">
+            <h3 class="header center black-text">Top Jananistore Items</h3>
+        </div>
+    </div>
+    <div id="sli">
+        <div class="row">
+            <div class="col s12 l12">
+                <div class="slider">
+                    <ul class="slides fireslides"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--slider items-->
+    <div id="progress" class="center" style="display:none">
+        <div class="preloader-wrapper small active">
+            <div class="spinner-layer spinner-green-only">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="items">
+    </div>
+    <div class="section no-pad-bot" id="index-banner" style="padding:0;">
+        <div class="container">
+            <h3 class="header center balck-text">Featured Collections</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12 m4 l4">
+            <div class="card">
+                <div class="card-image">
+                    <img class="imga" src="img/decore1.jpeg">
+                    <span class="card-title">Décor</span>
+                </div>
+                <div class="card-content">
+                    <p> Brighten your house with the fine arts of elegant and traditional handmade designs. Reflection of vivid
+                        culture through graceful and exquisite craft from the corner of the nation.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col s12 m4 l4">
+            <div class="card">
+                <div class="card-image">
+                    <img class="imga" src="img/table2.jpg">
+                    <span class="card-title">Table</span>
+                </div>
+                <div class="card-content">
+                    <p>A complement to tables, delightful to dine and enchanting to host. Wide range of collection, hand-picked
+                        and plucked, a must to have table tops.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col s12 m4 l4">
+            <div class="card">
+                <div class="card-image">
+                    <img class="imga" src="img/wall2.jpg">
+                    <span class="card-title">walls</span>
+                </div>
+                <div class="card-content">
+                    <p> Great design on walls will make you fall in love at first sight. A collection of ethnic, scenic and modern
+                        arts. All this at a best price and superior quality which will tranquil to mind and touch your heart.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="page-footer teal darken-3">
+        <div class="container">
+            <div class="row">
+                <div class="col l3 s12">
+                    <a href="/aboutus.html">
+                        <h5 class="white-text">About Us</h5>
+                    </a>
+                    <p class="grey-text text-lighten-4"></p>
+                </div>
+                <div class="col l3 s12">
+                    <a href="/contactus.html">
+                        <h5 class="white-text">Contacts Us</h5>
+                    </a>
+                </div>
+                <div class="col l3 s12">
+                    <a href="/team.html">
+                        <h5 class="white-text">Team</h5>
+                    </a>
+                </div>
+                <div class="col l3 s12">
+                    <ul>
+                        <li>
+                            <a href="https://www.facebook.com/jananistore"><i class="fa fa-facebook-official fa-2x"  aria-hidden="true"></i></a>
+                            <a href="https://twitter.com/jananistore"><i class="fa fa-twitter-square fa-2x" aria-hidden="true"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            <div class="container">
+                <p>
+                    Copywrite@jananistore-2016
+                </p>
+            </div>
+        </div>
+    </footer>
+    <!--  Scripts-->
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="js/materialize.js"></script>
+    <script src="js/init.js"></script>
+    <script type="text/javascript" src="slick/slick.min.js"></script>
+    <script>
+        var database = firebase.database();
+        var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+
+        document.getElementById('progress').style.display = "block";
+
+
+        var topsliinner =
+            '<li><img src="%data%"><div class="caption center-align"><h3>%data1%</h3><h5 class="light grey-text text-lighten-3">"%data2%"</h5></div></li>';
+        var slider =
+            ' <a class="imageWrapper2" href="/src/itempage.html?item=%data%&category=%data3%"><img id="image_fire" src="%data1%"><div id="price_fire"></div><div class="material-icons icon">add_shopping_cart</div></a>';
+        var slideritem =
+            '<div class="card slidecard  grey lighten-3" style="padding:0;margin-bottom: 20px;"><div class="section center slideimg" style="padding:0;"><div class="row " style="margin:0;"><div class="col s12 m12 l2 center" style="margin-top: 150px;"><h4>%data%</h4></div><div class="col s12 m12 l10" style="margin-top:15px;margin-bottom:15px;"><div class="myslick %data2%"></div></div></div></div></div>';
+        window.onload = function () {
+            initApp();
+            database.ref('/public/products/mainpage/s1').once('value', function (snapshot) {
+                snapshot.forEach(function (childSnapshot) {
+                    var childKey = childSnapshot.key;
+                    var childData = childSnapshot.val();
+                    var formattedsli = topsliinner.replace("%data%", childData.ImageUrl).replace(
+                        "%data1%", childData.NameOfTheItem).replace("%data2%", childData.long);
+                    $('.fireslides').append(formattedsli);
+                });
+            }).then(function () {
+                $('.carousel.carousel-slider').carousel({
+                    full_width: true
+                });
+                $('.slider').slider({
+                    full_width: true
+                });
+            });
+            database.ref('/public/products/category').once('value', function (snapshot) {
+                snapshot.forEach(function (childSnapshot) {
+                    var childKey = childSnapshot.key;
+                    var childData = childSnapshot.val();
+                    var count = Object.keys(childData).length;
+                    var formattedslidershell = slideritem.replace('%data%', childKey).replace(
+                        "%data2%", childKey);
+                    $('#items').append(formattedslidershell);
+                    for (var i = 0; i < count; i++) {
+                        var element = Object.keys(childData)[i];
+
+                        var formattedsliderinner = slider.replace('%data1%', childData[element].ImageUrl)
+                            .replace('%data%', element).replace('%data3%', childKey);
+                        $('.' + childKey).append(formattedsliderinner);
+
+                    }
+
+                });
+            }).then(function () {
+                if (w <= 1000) {
+
+                    $('.myslick').slick({
+                        infinite: true,
+                        slidesToShow: 2,
+                        slidesToScroll: 2
+                    });
+                } else {
+                    $('.myslick').slick({
+                        infinite: true,
+                        slidesToShow: 4,
+                        slidesToScroll: 4
+                    });
+                }
+                document.getElementById('progress').style.display = "none";
+
+            });
+        };
+        if (w <= 1000) {
+            document.getElementById('mobile_search').style.visibility = 'hidden';
+        }
+    </script>
+</body>
+
+</html>

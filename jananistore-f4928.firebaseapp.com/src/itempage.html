@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Item</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
+    <link href="../css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection" />
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Bree+Serif|Cinzel|Monda|Playfair+Display+SC|Rubik" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/3.5.3/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyBCOoR4l7M6DyNIahR6H93Z5zpOTsZ_w-E",
+            authDomain: "jananistore-f4928.firebaseapp.com",
+            databaseURL: "https://jananistore-f4928.firebaseio.com",
+            storageBucket: "jananistore-f4928.appspot.com",
+            messagingSenderId: "538178486843"
+        };
+        firebase.initializeApp(config);
+    </script>
+    <script type="text/javascript">
+        var login = '<div class="col s12 m12 l5"><li><a onclick="signout()">signout</a></li></div>';
+        var displayName;
+        var emailoftheuser, uid;
+
+        function googlelogin() {
+            if (!firebase.auth().currentUser) {
+                var provider = new firebase.auth.GoogleAuthProvider();
+                provider.addScope('https://www.googleapis.com/auth/plus.login');
+                firebase.auth().signInWithPopup(provider).then(function(result) {
+                    var token = result.credential.accessToken;
+                    var user = result.user;
+
+
+                }).catch(function(error) {
+                    var errorCode = error.code;
+                    var errorMessage = error.message;
+                    var email = error.email;
+                    var credential = error.credential;
+                    if (errorCode === 'auth/account-exists-with-different-credential') {
+                        alert('You have already signed up with a different auth provider for that email.');
+                    } else {
+                        console.error(error);
+                    }
+                });
+            } else {
+                firebase.auth().signOut();
+            }
+
+
+        }
+
+        function initApp() {
+            firebase.auth().onAuthStateChanged(function(user) {
+                if (user) {
+                    displayName = user.displayName;
+                    //   document.getElementById('loginbuttons').innerHTML=displayName;
+                    uid = user.uid;
+                    document.getElementById('loginbuttons').innerHTML = login;
+                    document.getElementById('fab').hidden = "hidden";
+                    document.getElementById("nameattop").innerHTML = user.displayName;
+                    readdata(uid);
+
+                } else {
+
+                    console.log("u n f");
+
+                }
+
+
+            });
+
+
+        }
+
+
+
+        function signout() {
+            firebase.auth().signOut();
+            window.open("/index.html", "_self");
+        }
+    </script>
+    <style media="screen">
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Bree Serif', serif;
+            background-color: #26a69a;
+        }
+        
+        header {
+            margin: 0;
+            padding: 0;
+            background-color: #26a69a;
+            height: 400px;
+        }
+        
+        header a {
+            color: #fff;
+        }
+        
+        .card {
+            margin-top: 20px;
+        }
+        
+        .brand-logo {
+            font-family: 'Bree Serif', serif;
+        }
+        
+        .nav2 {
+            height: 100px;
+        }
+        
+        .slideimg h3 {
+            font-family: 'Monda', sans-serif;
+        }
+        
+        .slidecard {
+            margin: 10px;
+        }
+        
+        .mycontainer {
+            margin: 50px;
+        }
+        
+        li i {
+            padding: 5px;
+        }
+        
+        #signupfab a {
+            margin: 15px;
+        }
+        
+        #loginfab a {
+            margin: 15px;
+        }
+        
+        .mycontainerlf {
+            margin-left: 40px;
+            margin-right: 40px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="teal darken-3 lighten-1" role="navigation" style="height:35px;">
+        <div class="nav-wrapper mycontainerlf" id="nav">
+            <ul class="right hide-on-med-and-down" style="height:inherit;">
+                <li>Hi <span id="nameattop"></span>!</li>
+                <li id="loginbuttons">
+                    <a href="#login">Login</a>
+                </li>
+                <li>
+                    <a href="#cart">Cart<span class="badge" id="badge"></span></a>
+                </li>
+            </ul>
+
+
+            <ul id="nav-mobile" class="side-nav">
+                <li><a href="#login">login</a></li>
+                <li><a href="#">cart </a></li>
+            </ul>
+            <ul id="nav-mobile2" class="side-nav">
+                <li><a href="#login">login</a></li>
+                <li><a href="#">cart<span class="new badge">4</span> </a></li>
+            </ul>
+            <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+
+        </div>
+    </nav>
+
+    <nav class="teal darken-3 lighten-1 nav2" role="navigation" style="height:90px;">
+        <div class="nav-wrapper  mycontainerlf" id="nav"><a id="logo-container" href="#" class="brand-logo" style="font-size:45px;">Jananistore</a>
+            <div class="mycontainerlf">
+                <div class="row">
+                    <div class="col s12 m12 l12">
+                        <div id="mobile_search">
+                            <ul class="right hide-on-med-and-down" style="width: 75%;">
+                                <div class="row">
+                                    <div class=" myinput col s12 m12 l10 center float">
+                                        <li style="width:inherit;">
+                                            <input id="search" placeholder="Search here" type="text" style="background:#fff;color:#000;" class="autocomplete">
+                                        </li>
+
+                                        <li>
+                                            <i class="material-icons prefix">search</i>
+                                        </li>
+                                    </div>
+                                </div>
+                            </ul>
+                            <a href="#" data-activates="nav-mobile2" class="button-collapse" style="width:100%;">
+                                <div class="row center">
+                                    <div class=" myinput col s12 m12 l12 center float">
+                                        <ul style="width:inherit">
+
+                                            <li style="width:inherit;">
+                                                <input id="search" placeholder="Search here" type="text" style="background:#fff;color:#000;" class="autocomplete">
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div id="login" class="modal">
+        <div class="modal-content" id="fab">
+            <div class="row">
+                <div class="center">
+                    <a class="waves-effect waves-white btn-flat red white-text" onclick="googlelogin()">Login with Google</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="container ">
+        <div id="progress" class="center" style="display:none">
+            <div class="preloader-wrapper small active">
+                <div class="spinner-layer spinner-red-only">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card fadein">
+            <div class="card-content" id="card-content" style="display:block">
+                <div class="row" style="margin:0px">
+                    <div class="col s12 m6 l6">
+                        <img id="imagefire" class="responsive-img" alt="asdas">
+                    </div>
+                    <div class="col s12 m6 l6">
+                        <h5 id="noi"></h5>
+                        <p>&#8377;:<span id="poi"></span></p>
+                        <br>
+                        <div class="input-field col s12">
+                            <select>
+                                <option value="" disabled selected>quantity</option>
+                                <option value="1"> 1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                </select>
+                        </div>
+                        <br>
+                        <div class="divider">
+                        </div>
+                        <br>
+                        <p>discription:<span id="doi"></span></p>
+
+                        <br>
+                        <div class="center">
+                            <a class="waves-effect waves-light btn " onclick="addcart()"><i class="material-icons left">add_shopping_cart</i>Add to cart</a>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script src="../js/materialize.js"></script>
+
+    <script>
+        var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+        var database = firebase.database();
+        var param1var, param2var;
+        var count = "Count";
+        document.getElementById('progress').style.display = "block";
+        document.getElementById('card-content').style.display = "none";
+
+        if (w <= 1000) {
+            // console.log(w);
+            document.getElementById('mobile_search').style.visibility = 'hidden';
+
+        }
+
+        // database.ref('users/merchants/' + uid + '/cart/Count').once('value').then(function(snapshot) {
+        //     console.log(snapshot.val());
+
+        // });
+
+
+        // database.ref('/public/products/category/' + param2var).once('value', function(snapshot) {
+        //     snapshot.forEach(function(childSnapshot) {
+        //         var childKey = childSnapshot.key;
+        //         var childData = childSnapshot.val();
+
+
+        //     });
+        // });
+
+
+        // function addcart() {
+        //     firebase.database().ref('users/merchants/' + uid + 'cart' + count).set({
+        //         number:
+        //     });
+        // }
+        function readdata(uidd) {
+            $(document).ready(function() {
+                $('select').material_select();
+                param1var = getQueryVariable("item");
+                // console.log(param1var);
+                param2var = getQueryVariable("category");
+                // console.log(param2var);
+
+                function getQueryVariable(variable) {
+                    var query = window.location.search.substring(1);
+                    var vars = query.split("&");
+                    for (var i = 0; i < vars.length; i++) {
+                        var pair = vars[i].split("=");
+                        if (pair[0] == variable) {
+                            return pair[1];
+                        }
+                    }
+                }
+                database.ref('/public/products/category/' + param2var).once('value', function(snapshot) {
+                    snapshot.forEach(function(childSnapshot) {
+                        var childKey = childSnapshot.key;
+                        var childData = childSnapshot.val();
+                        // console.log(childKey);
+                        if (childKey === param1var) {
+                            $('#imagefire').attr("src", childData.ImageUrl);
+                            $('#noi').html(childData.NameOfTheItem);
+                            $('#poi').html(childData.price);
+                            $('#doi').html(childData.long);
+                        }
+
+                    })
+                }).then(function() {
+                    document.getElementById('progress').style.display = "none";
+                    document.getElementById('card-content').style.display = "block";
+
+                });
+
+            });
+
+
+        }
+
+        function addcart() {
+            console.log("sadas")
+            database.ref('users/merchants/' + uid + '/cart').push().set({
+                pushid: param2var,
+                pushcategory: param1var
+            });
+        }
+        window.onload = function() {
+
+            initApp();
+
+
+
+        }
+    </script>
+</body>
+
+</html>

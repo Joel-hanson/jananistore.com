@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0" />
+    <title>Jananistore|Contact Us</title>
+    <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection" />
+    <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection" />
+    <link href="css/animate.css" type="text/css" rel="stylesheet" media="screen,projection" />
+    <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet">
+    <style media="screen">
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            background: #e0e0e0;
+        }
+        
+        header {
+            margin: 0;
+            padding: 0;
+            background-color: #26a69a;
+            height: 400px;
+        }
+        
+        header h1 {
+            margin: 0;
+            padding: 100px;
+            color: #fff;
+        }
+        
+        .section h1 {
+            color: #000;
+            padding: 10px;
+        }
+        
+        .section p {
+            text-align: center;
+            line-height: 32px;
+            font-size: 15px;
+            color: #7f7f7f;
+            font-family: 'PT Sans', sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <center>
+            <h1>Reach Out</h1>
+        </center>
+
+        <div class="container ">
+
+            <div class="row">
+
+                <div class="col s12 m12 l12 ">
+                    <div class="card fadein">
+                        <div class="card-content ">
+                            <form method="POST" action="https://formspree.io/myjananistore@gmail.com">
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <input type="text" id="first_name" class="validate" name="Name">
+                                        <label for="first_name">Name</label>
+                                    </div>
+                                    <div class="input-field col s12">
+                                        <input id="email" type="email" class="validate" name="Email">
+                                        <label for="email" data-error="wrong" data-success="right">Email</label>
+                                    </div>
+                                    <div class="input-field col s12">
+                                        <input type="number" id="number" class="validate" name="Number">
+                                        <label for="number">Number</label>
+                                    </div>
+                                    <div class="input-field col s12">
+                                        <textarea id="textarea1" class="materialize-textarea" name="message"></textarea>
+                                        <label for="textarea1">message</label>
+                                    </div>
+                                    <button class="waves-effect waves-light btn" type="submit" value="send">submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script src="js/materialize.js"></script>
+    <script type="text/javascript"></script>
+</body>
+
+</html>

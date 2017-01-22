@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Item</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
+    <link href="../css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection" />
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Bree+Serif|Cinzel|Monda|Playfair+Display+SC|Rubik" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/3.5.3/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyBCOoR4l7M6DyNIahR6H93Z5zpOTsZ_w-E",
+            authDomain: "jananistore-f4928.firebaseapp.com",
+            databaseURL: "https://jananistore-f4928.firebaseio.com",
+            storageBucket: "jananistore-f4928.appspot.com",
+            messagingSenderId: "538178486843"
+        };
+        firebase.initializeApp(config);
+    </script>
+    <script type="text/javascript">
+        var login = '<div class="col s12 m12 l5"><li><a onclick="signout()">signout</a></li></div>';
+        var displayName;
+
+        function googlelogin() {
+            if (!firebase.auth().currentUser) {
+                var provider = new firebase.auth.GoogleAuthProvider();
+                provider.addScope('https://www.googleapis.com/auth/plus.login');
+                firebase.auth().signInWithPopup(provider).then(function(result) {
+                    var token = result.credential.accessToken;
+                    var user = result.user;
+
+
+                }).catch(function(error) {
+                    var errorCode = error.code;
+                    var errorMessage = error.message;
+                    var email = error.email;
+                    var credential = error.credential;
+                    if (errorCode === 'auth/account-exists-with-different-credential') {
+                        alert('You have already signed up with a different auth provider for that email.');
+                    } else {
+                        console.error(error);
+                    }
+                });
+            } else {
+                firebase.auth().signOut();
+            }
+
+
+        }
+
+        function initApp() {
+            firebase.auth().onAuthStateChanged(function(user) {
+                if (user) {
+                    displayName = user.displayName;
+                    //   document.getElementById('loginbuttons').innerHTML=displayName;
+
+                    document.getElementById('loginbuttons').innerHTML = login;
+                    document.getElementById('fab').hidden = "hidden";
+                    document.getElementById("nameattop").innerHTML = user.displayName;
+                } else {
+
+
+
+                }
+
+
+            });
+
+
+        }
+
+
+
+        function signout() {
+            firebase.auth().signOut();
+            window.open("/index.html", "_self");
+        }
+    </script>
+    <style media="screen">
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Bree Serif', serif;
+            background-color: #26a69a;
+        }
+        
+        .brand-logo {
+            font-family: 'Bree Serif', serif;
+        }
+        
+        .nav2 {
+            height: 100px;
+        }
+        
+        .slideimg h3 {
+            font-family: 'Monda', sans-serif;
+        }
+        
+        .slidecard {
+            margin: 10px;
+        }
+        
+        .mycontainer {
+            margin: 50px;
+        }
+        
+        li i {
+            padding: 5px;
+        }
+        
+        #signupfab a {
+            margin: 15px;
+        }
+        
+        #loginfab a {
+            margin: 15px;
+        }
+        
+        .mycontainerlf {
+            margin-left: 40px;
+            margin-right: 40px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="teal darken-3 lighten-1" role="navigation" style="height:35px;">
+        <div class="nav-wrapper mycontainerlf" id="nav">
+            <ul class="right hide-on-med-and-down" style="height:inherit;">
+                <li>Hi <span id="nameattop"></span>!</li>
+                <li id="loginbuttons">
+                    <a href="#login">Login</a>
+                </li>
+                <li>
+                    <a href="#cart">Cart <span class="badge red-text" id="badge">dsa</span></a>
+
+                </li>
+            </ul>
+
+
+            <ul id="nav-mobile" class="side-nav">
+                <li><a href="#login">login</a></li>
+                <li><a href="#">cart </a></li>
+            </ul>
+            <ul id="nav-mobile2" class="side-nav">
+                <li><a href="#login">login</a></li>
+                <li><a href="#">cart<span class="badge">4</span> </a></li>
+            </ul>
+            <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+
+        </div>
+    </nav>
+
+    <nav class="teal darken-3 lighten-1 nav2" role="navigation" style="height:90px;">
+        <div class="nav-wrapper  mycontainerlf" id="nav"><a id="logo-container" href="#" class="brand-logo" style="font-size:45px;">Jananistore</a>
+            <div class="mycontainerlf">
+                <div class="row">
+                    <div class="col s12 m12 l12">
+                        <div id="mobile_search">
+                            <ul class="right hide-on-med-and-down" style="width: 75%;">
+                                <div class="row">
+                                    <div class=" myinput col s12 m12 l10 center float">
+                                        <li style="width:inherit;">
+                                            <input id="search" placeholder="Search here" type="text" style="background:#fff;color:#000;" class="autocomplete">
+                                        </li>
+
+                                        <li>
+                                            <i class="material-icons prefix">search</i>
+                                        </li>
+                                    </div>
+                                </div>
+                            </ul>
+                            <a href="#" data-activates="nav-mobile2" class="button-collapse" style="width:100%;">
+                                <div class="row center">
+                                    <div class=" myinput col s12 m12 l12 center float">
+                                        <ul style="width:inherit">
+
+                                            <li style="width:inherit;">
+                                                <input id="search" placeholder="Search here" type="text" style="background:#fff;color:#000;" class="autocomplete">
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div id="login" class="modal">
+        <div class="modal-content" id="fab">
+            <div class="row">
+                <div class="center">
+                    <a class="waves-effect waves-white btn-flat red white-text" onclick="googlelogin()">Login with Google</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container ">
+        <div id="progress" class="center" style="display:none">
+            <div class="preloader-wrapper small active">
+                <div class="spinner-layer spinner-red-only">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card fadein">
+            <div class="card-content " id="card-content" style="display:block">
+                <h3 class="center">checkout</h3>
+                <div class="center">
+                    <em>Shop is a demo app - form data will not be sent</em>
+
+                </div>
+                <div class="row">
+                    <div class="col s12 m12 l6">
+                        <blockquote>
+                            Account Information
+                        </blockquote>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="email" type="email" class="validate">
+                                <label for="email">Email</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="phone" type="number" class="validate">
+                                <label for="phone">Phone Number</label>
+                            </div>
+                        </div>
+                        <blockquote>
+                            Account Information
+                        </blockquote>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="address" type="text" class="validate">
+                                <label for="address">address</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="city" type="text" class="validate">
+                                <label for="city">city</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <input id="state" type="text" class="validate">
+                                <label for="state">state</label>
+                            </div>
+                            <div class="input-field col s6">
+                                <input id="postal" type="text" class="validate">
+                                <label for="postal">postal code</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <select>
+                                
+                                <option value="1">Kerala</option>
+                                <option value="2">Bangalore</option>
+                                <option value="3">Tamil Nadu</option>
+                                </select>
+                                <label>country</label>
+                            </div>
+                        </div>
+                        <blockquote>
+                            Billing Address
+                        </blockquote>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <p>
+                                    <input type="checkbox" id="test5" />
+                                    <label for="test5">Use different billing address</label>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s12 m12 l6">
+                        <blockquote>
+                            Payment Method
+                        </blockquote>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="Cardholder" type="text" class="validate">
+                                <label for="Cardholder">Cardholder Name</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="Cardnumber" type="text" class="validate">
+                                <label for="Cardnumber">Card Number</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s4">
+                                <select>
+                                <option value="Jan">Jan</option>
+                                <option value="Feb">Feb</option>
+                                <option value="Mar">Mar</option>
+                                <option value="Apr">Apr</option>
+                                <option value="May">May</option>
+                                <option value="Jun">Jun</option>
+                                <option value="Jul">Jul</option>
+                                <option value="Aug">Aug</option>
+                                <option value="Sep">Sep</option>
+                                <option value="Nov">Nov</option>
+                                <option value="Dec">Dec</option>
+                                </select>
+                                <label>Expiry</label>
+                            </div>
+                            <div class="input-field col s4">
+                                <select>
+                                <option value="2016">2016</option>
+                                <option value="2017">2017</option>
+                                <option value="2018">2018</option>
+                                <option value="2019">2019</option>
+                                <option value="2020">2020</option>
+                                <option value="2021">2021</option>
+                                <option value="2022">2022</option>
+                                <option value="2023">2023</option>
+                                <option value="2024">2024</option>
+                                <option value="2025">2025</option>
+                                <option value="2026">2026</option>
+                                </select>
+
+                            </div>
+                            <div class="input-field col s4">
+                                <input id="CVV" type="number" class="validate">
+                                <label for="CVV">CVV</label>
+                            </div>
+                        </div>
+                        <blockquote>
+                            Payment Method
+                        </blockquote>
+                        <a class="waves-effect waves-light btn"><i class="material-icons left">credit_card</i>Place order</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script src="../js/materialize.js"></script>
+
+    <script>
+        var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+
+        if (w <= 1000) {
+            console.log(w);
+            document.getElementById('mobile_search').style.visibility = 'hidden';
+
+        }
+        window.onload = function() {
+            initApp();
+            $('select').material_select();
+        }
+    </script>
+</body>
+
+</html>

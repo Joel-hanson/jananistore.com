@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0" />
+    <meta charset="utf-8">
+    <title>Jananistore|Merchant|loginpage</title>
+    <!-- CSS  -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="../css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection" />
+    <link href="../css/style.css" type="text/css" rel="stylesheet" media="screen,projection" />
+    <link href="../css/font-awesome.min.css" type="text/css" rel="stylesheet" media="screen,projection" />
+    <link href="https://fonts.googleapis.com/css?family=Bree+Serif|Cinzel|Monda|Playfair+Display+SC|Rubik" rel="stylesheet">
+
+    <script src="https://www.gstatic.com/firebasejs/3.5.3/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyBCOoR4l7M6DyNIahR6H93Z5zpOTsZ_w-E",
+            authDomain: "jananistore-f4928.firebaseapp.com",
+            databaseURL: "https://jananistore-f4928.firebaseio.com",
+            storageBucket: "jananistore-f4928.appspot.com",
+            messagingSenderId: "538178486843"
+        };
+        firebase.initializeApp(config);
+        var storage = firebase.storage();
+    </script>
+    <script type="text/javascript">
+        var login = '<div class="col s12 m12 l5"><li><a onclick="signout()">signout</a></li></div>';
+        var emailoftheuser, uid;
+
+        function googlelogin() {
+            if (!firebase.auth().currentUser) {
+                var provider = new firebase.auth.GoogleAuthProvider();
+                provider.addScope('https://www.googleapis.com/auth/plus.login');
+                firebase.auth().signInWithPopup(provider).then(function(result) {
+                    var token = result.credential.accessToken;
+                    var user = result.user;
+                    document.getElementById("nameattop").innerHTML = user.displayName;
+                }).catch(function(error) {
+                    var errorCode = error.code;
+                    var errorMessage = error.message;
+                    var email = error.email;
+                    var credential = error.credential;
+                    if (errorCode === 'auth/account-exists-with-different-credential') {
+                        alert('You have already signed up with a different auth provider for that email.');
+                    } else {
+                        console.error(error);
+                    }
+                });
+            } else {
+                firebase.auth().signOut();
+            }
+        }
+
+
+
+        function signout() {
+            firebase.auth().signOut();
+            location.reload();
+        }
+    </script>
+    <style media="screen">
+        .brand-logo {
+            font-family: 'Bree Serif', serif;
+        }
+        
+        #signupfab a {
+            margin: 15px;
+        }
+        
+        #loginfab a {
+            margin: 15px;
+        }
+        
+        #nav li {
+            margin-left: 10px;
+        }
+        
+        .mycontainer {
+            margin: 40px;
+        }
+        
+        .input-field input[type=text]:focus+label {
+            color: red;
+        }
+        
+        #progress {
+            margin-top: 250px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="teal darken-3 lighten-1" role="navigation">
+        <div class="nav-wrapper container" id="nav">
+            <a id="logo-container" href="#" class="brand-logo">Jananistore</a>
+            <ul class="right hide-on-med-and-down">
+                <li>Hi <span id="nameattop"></span>!</li>
+                <li id="loginbuttons">
+                    <a href="#login">Login</a>
+                </li>
+                <li>
+                    <a href="#cart">Cart</a>
+                </li>
+
+            </ul>
+            <ul id="nav-mobile" class="side-nav">
+                <li>
+                    <a href="#login">login</a>
+                </li>
+                <li>
+                    <a href="#">cart
+                        </a>
+                </li>
+            </ul>
+            <a href="#" data-activates="nav-mobile" class="button-collapse">
+                <i class="material-icons">menu</i>
+            </a>
+
+        </div>
+    </nav>
+
+    <div id="login" class="modal">
+        <div class="modal-content" id="fab">
+            <div class="row">
+                <div class="center">
+                    <a class="waves-effect waves-white btn-flat red white-text" onclick="googlelogin()">Login with Google</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--The  form of merchant-->
+
+    <div class="mycontainer" id="mycontainer" style="display:block">
+        <div class="section">
+            <div class="row">
+                <div class="col s12 m12 l12">
+                    <div class="card z-depth-4 blue-grey lighten-5" style="padding:10px;">
+
+                        <div class="row">
+                            <form class="col s12">
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <input id="nameoftheitem" type="text" class="validate" required="" aria-required="true">
+                                        <label for="nameoftheitem" data-error="wrong" data-success="right">Name of the Item</label>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col s12 ">
+                                        Type:
+                                        <div class="input-field col s12 m12 l12">
+                                            <select id="selectthetype" class="validate" required="" aria-required="true">
+                                                    <option value="Wall">Wall</option>
+                                                    <option value="Decore">Decore</option>
+                                                    <option value="bedding">bedding</option>
+                                                    <option value="kids">kids</option>
+                                                    <option value="table">table</option>
+                                                    <option value="toys">toys</option>
+                                                    <option value="door-bell">door-bell</option>
+                                                </select>
+                                            <label data-error="wrong" data-success="right">Select the type</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <input id="price" type="number" class="validate" required="" aria-required="true">
+                                        <label for="price" data-error="wrong" data-success="right">Price of the Item</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <textarea id="shorttxt" type="text" class="materialize-textarea validate" required="" aria-required="true"></textarea>
+                                        <label for="shorttxt" data-error="wrong" data-success="right">Short discription of the Item</label>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <textarea id="longtxt" type="text" class="materialize-textarea validate" required="" aria-required="true"></textarea>
+                                        <label for="longtxt" data-error="wrong" data-success="right">Long discription of the item of the Item</label>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <textarea id="cart_discription" type="text" class="materialize-textarea validate" required="" aria-required="true"></textarea>
+                                        <label for="cart_discription" data-error="wrong" data-success="right">Cart discription of the item</label>
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="col s12 ">
+                                        Status:
+                                        <div class="input-field col s12 m12 l12">
+                                            <select id="status" class="validate" required="" aria-required="true">
+                                                    <option value="" disabled selected>Choose your Status</option>
+                                                    <option value="good">good</option>
+                                                    <option value="very good">very good</option>
+                                                </select>
+                                            <label data-error="wrong" data-success="right">Select the Status</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <input placeholder=" in grams" id="weight" type="number" class="validate" required="" aria-required="true">
+                                        <label for="weight" data-error="wrong" data-success="right">Weight of the Item</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <input placeholder="width x height" id="size" type="number" class="validate" required="" aria-required="true">
+                                        <label for="Size" data-error="wrong" data-success="right">Size of the Item</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <input id="colorofitem" type="text" class="validate" required="" aria-required="true">
+                                        <label for="colorofitem" data-error="wrong" data-success="right">color of the Item</label>
+                                    </div>
+                                </div>
+                                <div class="col s12 m12 l12">
+
+
+                                    <div class="box__input">
+                                        <input class="box__file" type="file" name="files[]" id="file" data-multiple-caption="{count} files selected" multiple/>
+                                        <label for="file">
+                                    <strong>Choose a file</strong>
+                                    <span class="box__dragndrop">
+                                        or drag it here</span>.</label>
+
+                                    </div>
+                                    <div class="box__uploading">Uploading&hellip;</div>
+                                    <div class="box__success">Done!</div>
+                                    <div class="box__error">Error!
+                                        <span></span>.</div>
+
+                                    <div style="margin-top:50px">
+                                        <img id="blah" src="#" alt="your image" style="width:30%;height:100%;" hidden/>
+
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col s12">
+                                        <button class="btn waves-effect waves-light box__button" type="button" name="action" id="upload" onclick="up_load()">Upload</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <div id="progress" style="display:none">
+        <div class="progress">
+            <div class="indeterminate"></div>
+        </div>
+    </div>
+
+
+    <div id="modal1" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <div class="row center">
+                <h3 style="color:green;">SUCCESS</h3>
+                <div class="col s12 m12">
+                    <h4 id="moitemname"></h4>
+                    <h3 id="moitemprice"></h3>
+                    <p id="moitemdetails"></p>
+                    <img id="moimg" alt="img" style="width:30%;height:100%;">
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Done</a>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="../js/materialize.js"></script>
+    <script>
+        (function($) {
+            $(function() {
+
+                $('.button-collapse').sideNav();
+
+            }); // end of document ready
+        })(jQuery); // end of jQuery name space
+        (function($) {
+            $(function() {
+
+                $('input.autocomplete').autocomplete({
+                    data: {
+                        "Apple": null,
+                        "Microsoft": null,
+                        "Google": 'http://placehold.it/250x250'
+                    }
+                });
+                $('.carousel.carousel-slider').carousel({
+                    full_width: true
+                });
+                $('.slider').slider({
+                    full_width: true
+                });
+                $('.modal').modal();
+                $('select').material_select();
+            });
+        })(jQuery); // end of jQuery name space
+    </script>
+    <script>
+        var auth = firebase.auth();
+        var storageRef = firebase.storage().ref();
+        var database = firebase.database();
+        var file, metadata, sel, sv, moitemnameval, moitemdetailsval, moimgval;
+        var reader = new FileReader();
+        var imageListRef = firebase.database().ref('public/products/category/');
+        var mainpageListRef = firebase.database().ref('public/products/mainpage/');
+
+        function up_load1(evt) {
+            evt.stopPropagation();
+            evt.preventDefault();
+            file = evt.target.files[0];
+
+            metadata = {
+                'contentType': file.type
+            };
+            console.log(file.name);
+            reader.readAsDataURL(file);
+            reader.addEventListener("load", function() {
+                $('#blah')
+                    .attr('src', reader.result)
+                    .width("30%")
+                    .height("75%");
+                $('#blah').show();
+            }, false);
+        }
+
+        function up_load() {
+            if (!document.getElementById('nameoftheitem').value || !document.getElementById('selectthetype').value || !document.getElementById('price').value || !document.getElementById('shorttxt').value || !document.getElementById('longtxt').value || !document.getElementById('cart_discription').value || !document.getElementById('status').value || !document.getElementById('weight').value || !document.getElementById('size').value || !document.getElementById('colorofitem').value || !file) {
+                Materialize.toast('please fill all data', 4000)
+                return;
+            }
+            var nameoftheitem = document.getElementById('nameoftheitem').value;
+            var sel = document.getElementById('selectthetype');
+            var values = sel.options[sel.selectedIndex].value;
+            var price = document.getElementById('price').value;
+            var shorttxt = document.getElementById('shorttxt').value;
+            var longtxt = document.getElementById('longtxt').value;
+            var cart_discription = document.getElementById('cart_discription').value;
+            var status = document.getElementById('status');
+            var values2 = status.options[status.selectedIndex].value;
+            var weight = document.getElementById('weight').value;
+            var size = document.getElementById('size').value;
+            var colorofitem = document.getElementById('colorofitem').value
+            document.getElementById('mycontainer').style.display = "none";
+            document.getElementById('progress').style.display = "block";
+            storageRef.child('images/' + uid + '/' + file.name).put(file, metadata).then(function(snapshot) {
+
+                var url = snapshot.metadata.downloadURLs[0];
+
+
+
+                firebase.database().ref('users/merchants/' + uid + '/' + nameoftheitem).set({
+                    NameOfTheItem: nameoftheitem,
+                    email: emailoftheuser,
+                    ImageUrl: url,
+                    TypeOfTheItem: values,
+                    price: price,
+                    short: shorttxt,
+                    long: longtxt,
+                    cart_discription: cart_discription,
+                    status: values2,
+                    weight: weight,
+                    size: size,
+                    colorofitem: colorofitem
+                });
+                firebase.database().ref('public/products/category/' + values).push().set({
+                    NameOfTheItem: nameoftheitem,
+                    email: emailoftheuser,
+                    ImageUrl: url,
+                    TypeOfTheItem: values,
+                    price: price,
+                    short: shorttxt,
+                    long: longtxt,
+                    cart_discription: cart_discription,
+                    status: values2,
+                    weight: weight,
+                    size: size,
+                    colorofitem: colorofitem
+                });
+                firebase.database().ref('public/products/mainpage/s1/' + values).set({
+                    NameOfTheItem: nameoftheitem,
+                    email: emailoftheuser,
+                    ImageUrl: url,
+                    TypeOfTheItem: values,
+                    price: price,
+                    short: shorttxt,
+                    long: longtxt,
+                    cart_discription: cart_discription,
+                    status: values2,
+                    weight: weight,
+                    size: size,
+                    colorofitem: colorofitem
+
+                });
+                firebase.database().ref('public/products/mainpage/' + values).push().set({
+                    NameOfTheItem: nameoftheitem,
+                    email: emailoftheuser,
+                    ImageUrl: url,
+                    TypeOfTheItem: values,
+                    price: price,
+                    short: shorttxt,
+                    long: longtxt,
+                    cart_discription: cart_discription,
+                    status: values2,
+                    weight: weight,
+                    size: size,
+                    colorofitem: colorofitem
+
+                });
+                firebase.database().ref('tags/' + values).set({
+                    'tag': true
+
+                });
+                document.getElementById('upload').innerHTML = "success";
+                document.getElementById('mycontainer').style.display = "block";
+                document.getElementById('progress').style.display = "none";
+                var mo = firebase.database().ref('users/merchants/' + uid + '/' + nameoftheitem);
+                mo.on('value', function(snapshot) {
+                    moitemnameval = snapshot.val().NameOfTheItem;
+                    moitemlongdetailsval = snapshot.val().long;
+                    moimgval = snapshot.val().ImageUrl;
+                    moitemshortval = snapshot.val().short;
+                    moitempriceval = snapshot.val().price;
+                    mocartval = snapshot.val().cart_discription;
+                    mostatus = snapshot.val().status;
+                    mosize = snapshot.val().size;
+                    mocolor = snapshot.val().colorofitem;
+                });
+
+                document.getElementById('moitemname').innerHTML = moitemnameval;
+                document.getElementById('moitemdetails').innerHTML = moitemlongdetailsval;
+                document.getElementById('moimg').src = moimgval;
+                document.getElementById('moitemprice').src = moitempriceval;
+
+                $('#modal1').modal('open');
+                $('.modal').modal();
+
+
+                $('#blah')
+                    .attr('src', snapshot.metadata.downloadURLs[0])
+                    .width("100%")
+                    .height("75%");
+                $('#blah').show();
+
+
+
+            }).catch(function(error) {
+                // [START onfailure]
+                console.error('Upload failed:', error);
+                // [END onfailure]
+                document.getElementById('upload').innerHTML = "failed,try again";
+            });
+
+        }
+
+
+        window.onload = function() {
+            document.getElementById('file').addEventListener('change', up_load1, false);
+            document.getElementById('file').disabled = true;
+
+            auth.onAuthStateChanged(function(user) {
+                if (user) {
+                    console.log('user signed-in.', user);
+                    document.getElementById('file').disabled = false;
+                    document.getElementById('loginbuttons').innerHTML = login;
+                    document.getElementById('fab').hidden = "hidden";
+                    var displayName = user.displayName;
+                    uid = user.uid;
+                    emailoftheuser = user.email;
+                    document.getElementById("nameattop").innerHTML = user.displayName;
+
+                } else {
+                    console.log('There was no anonymous session. ');
+                    // Sign the user in anonymously since accessing Storage requires the user to be authorized.
+
+                }
+            });
+        }
+    </script>
+
+</body>
+
+</html>
